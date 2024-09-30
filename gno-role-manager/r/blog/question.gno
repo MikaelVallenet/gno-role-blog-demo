@@ -1,4 +1,4 @@
-package gnoverflow
+package blog
 
 import (
 	"std"
@@ -94,7 +94,7 @@ func UpdateQuestion(id uint64, title, text string) {
 
 	caller := std.PrevRealm().Addr()
 	question := getQuestion(id)
-	if question.IsLocked && caller != moderator {
+	if question.IsLocked {
 		panic("question locked by moderator")
 	}
 
@@ -102,7 +102,7 @@ func UpdateQuestion(id uint64, title, text string) {
 		panic("question is resolved")
 	}
 
-	if question.Author != caller && caller != moderator {
+	if question.Author != caller {
 		panic("a question can only be updated by its author")
 	}
 
@@ -148,15 +148,9 @@ func getQuestion(id uint64) *Question {
 
 func MarkQuestionResolved(questionID, answerID uint64) {
 	caller := std.PrevRealm().Addr()
+	rm.UserHasPermission(caller, RESOLVE_QUESTION_PERM)
 
 	question := getQuestion(questionID)
-	if question.IsLocked && caller != moderator {
-		panic("question locked by moderator")
-	}
-
-	if question.Author != caller && caller != moderator {
-		panic("only the author of the question can mark it as resolved")
-	}
 
 	if question.IsResolved {
 		panic("question is already resolved")

@@ -1,6 +1,9 @@
-package gnoverflow
+package blog
 
-import "gno.land/p/demo/uintavl"
+import (
+	"gno.land/p/demo/uintavl"
+	"gno.land/p/demo/role_manager"
+)
 
 // Select uintavl.Tree methods (for convenience).
 //
@@ -11,3 +14,4 @@ import "gno.land/p/demo/uintavl"
 
 // id (uint64) -> *Question
 var questions uintavl.Tree
+var rm *role_manager.RoleManager

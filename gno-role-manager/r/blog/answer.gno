@@ -1,4 +1,4 @@
-package gnoverflow
+package blog
 
 import (
 	"std"
@@ -56,11 +56,11 @@ func UpdateAnswer(id, questionID uint64, text string) {
 	caller := std.PrevRealm().Addr()
 	question := getQuestion(questionID)
 	answer := question.GetAnswer(id)
-	if answer.IsLocked && caller != moderator {
+	if answer.IsLocked {
 		panic("answer locked by moderator")
 	}
 
-	if answer.Author != caller && caller != moderator {
+	if answer.Author != caller {
 		panic("an answer can only be updated by its author")
 	}
 

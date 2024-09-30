@@ -1,4 +1,4 @@
-module gno.land/p/teritori/role_manager
+module gno.land/p/demo/role_manager
 
 require (
 	gno.land/p/demo/avl v0.0.0-latest

@@ -1,28 +1,27 @@
-package gnoverflow
+package blog
 
 import "std"
 
-var moderator = std.PrevRealm().Addr()
-
-func ChangeModerator(newModerator std.Address) {
-	assertAddressIsModerator(std.PrevRealm().Addr())
-	moderator = newModerator
-}
-
-func assertAddressIsModerator(address std.Address) {
-	if address != moderator {
-		panic("only the moderator can perform this action")
-	}
-}
-
 func LockQuestion(id uint64) {
-	assertAddressIsModerator(std.PrevRealm().Addr())
+	caller := std.PrevRealm().Addr()
+
+	// Check if the caller has the permission to lock the question.
+	if !rm.UserHasPermission(caller, LOCK_QUESTION_PERM) {
+		panic("caller does not have permission to lock question")
+	}
+
 	question := getQuestion(id)
 	question.IsLocked = true
 }
 
 func UnlockQuestion(id uint64) {
-	assertAddressIsModerator(std.PrevRealm().Addr())
+	caller := std.PrevRealm().Addr()
+
+	// Check if the caller has the permission to unlock the question.
+	if !rm.UserHasPermission(caller, LOCK_QUESTION_PERM) {
+		panic("caller does not have permission to unlock question")
+	}
+
 	question := getQuestion(id)
 	question.IsLocked = false
 }

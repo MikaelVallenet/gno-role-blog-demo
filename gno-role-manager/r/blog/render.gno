@@ -1,4 +1,4 @@
-package gnoverflow
+package blog
 
 import (
 	"strconv"
@@ -12,7 +12,7 @@ func Render(path string) string {
 
 	var sb strings.Builder
 
-	sb.WriteString("# Welcome to Gnoverflow!\n")
+	sb.WriteString("# Welcome to Role Manager Demo!\n")
 	if questions.Size() == 0 {
 		sb.WriteString("No questions yet. Be the first to ask!\n")
 		return sb.String()
@@ -27,7 +27,7 @@ func Render(path string) string {
 
 		idString := strconv.FormatUint(question.ID, 10)
 		sb.WriteString("---\n## ")
-		sb.WriteString("[" + question.RenderTitle() + "](/r/gc24/gnoverflow:questions/" + idString + ")\n\n")
+		sb.WriteString("[" + question.RenderTitle() + "](/r/mikael/blog:questions/" + idString + ")\n\n")
 
 		// sb.WriteString(question.Text + "\n\n")
 		// sb.WriteString("**Author: " + question.Author.String() + "**\n\n")
@@ -88,6 +88,12 @@ func renderQuestion(question *Question) string {
 	if len(question.Bounty) != 0 {
 		sb.WriteString("**Bounty: " + question.Bounty.String() + "**\n\n")
 	}
+	if question.IsResolved {
+		sb.WriteString("🎉 This question is resolved! 🎉\n\n")
+	}
+	if question.IsLocked {
+		sb.WriteString("🔒 This question is locked. 🔒\n\n")
+	}
 
 	sb.WriteString("## Answers\n\n")
 	for _, answer := range question.Answers {
@@ -100,7 +106,7 @@ func renderQuestion(question *Question) string {
 func renderAnswer(answer *Answer) string {
 	var sb strings.Builder
 	sb.WriteString("### [" + answer.Author.String() + " | " + strconv.Itoa(answer.Upvotes.Size()) +
-		" Upvotes](/r/gc24/gnoverflow:answers/" + strconv.FormatUint(answer.ID, 10) + ")\n\n")
+		" Upvotes](/r/mikael/blog:answers/" + strconv.FormatUint(answer.ID, 10) + ")\n\n")
 	sb.WriteString(answer.Text + "\n\n")
 	sb.WriteString("Answered by " + answer.Author.String() + "\n\n")
 
